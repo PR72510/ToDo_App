@@ -10,6 +10,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "todo_table")
 data class ToDoModel(
     @PrimaryKey(autoGenerate = true)
+    var id: Int,
     var title: String,
     var priority: Priority,
     var description: String
