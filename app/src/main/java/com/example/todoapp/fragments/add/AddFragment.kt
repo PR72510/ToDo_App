@@ -27,8 +27,7 @@ class AddFragment : BaseFragment<FragmentAddBinding>() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val data = viewModel.data.value
-        Log.i("MyTag", data.toString())
+        binding.spinnerPriorities.onItemSelectedListener = listener
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

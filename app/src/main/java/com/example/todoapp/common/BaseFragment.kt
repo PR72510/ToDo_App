@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.example.todoapp.R
 import com.example.todoapp.data.models.Priority
 
 /**
@@ -15,6 +19,18 @@ import com.example.todoapp.data.models.Priority
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     lateinit var binding: T
+    
+    val listener = object : AdapterView.OnItemSelectedListener {
+        override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            when(position){
+                0 -> {(parent?.getChildAt(0) as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.red))}
+                1 -> {(parent?.getChildAt(0) as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.yellow))}
+                2 -> {(parent?.getChildAt(0) as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.green))}
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
