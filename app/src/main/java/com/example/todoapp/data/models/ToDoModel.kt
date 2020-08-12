@@ -1,7 +1,8 @@
-package com.example.todoapp.data
+package com.example.todoapp.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.todoapp.data.models.Priority
 
 /**
  * Created by PR72510 on 11/8/20.

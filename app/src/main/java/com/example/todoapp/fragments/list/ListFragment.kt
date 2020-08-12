@@ -11,13 +11,13 @@ import androidx.navigation.fragment.findNavController
 import com.example.todoapp.R
 import com.example.todoapp.common.BaseFragment
 import com.example.todoapp.databinding.FragmentListBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ListFragment : BaseFragment<FragmentListBinding>() {
     override fun getContentView(): Int = R.layout.fragment_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setHasOptionsMenu(true)
         binding.fabAddTask.setOnClickListener {
             val action = ListFragmentDirections.actionListFragmentToAddFragment()
             findNavController().navigate(action)

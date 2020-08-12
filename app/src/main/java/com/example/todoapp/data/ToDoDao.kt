@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.todoapp.data.models.ToDoModel
 
 /**
  * Created by PR72510 on 11/8/20.
@@ -17,5 +18,5 @@ interface ToDoDao {
     fun getAllData(): LiveData<List<ToDoModel>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertData(toDoModel: ToDoModel)
+    suspend fun insertData(toDoModel: ToDoModel): Long
 }
