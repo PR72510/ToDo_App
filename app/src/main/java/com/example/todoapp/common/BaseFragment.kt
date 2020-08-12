@@ -56,4 +56,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     fun verifyDataFromUser(title: String, description: String): Boolean {
         return !(title.isEmpty() || description.isEmpty())
     }
+
+    fun parsePriorityToInt(priority: Priority): Int {
+        return when (priority) {
+            Priority.HIGH -> 0
+            Priority.MEDIUM -> 1
+            Priority.LOW -> 2
+        }
+    }
 }

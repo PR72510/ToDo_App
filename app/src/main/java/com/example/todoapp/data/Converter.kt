@@ -14,7 +14,7 @@ class Converter {
     }
 
     @TypeConverter
-    fun fromPriority(priority: String): Priority {
+    fun toPriority(priority: String): Priority {
         return Priority.valueOf(priority)
     }
 }

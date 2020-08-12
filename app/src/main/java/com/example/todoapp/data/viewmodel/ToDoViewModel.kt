@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
  * Created by PR72510 on 11/8/20.
  */
 class ToDoViewModel @ViewModelInject constructor(
-    private val respository: ToDoRepository
+    private val repository: ToDoRepository
 ) : ViewModel() {
 
     //    private val _data = MutableLiveData<List<ToDoModel>>()
@@ -21,12 +21,17 @@ class ToDoViewModel @ViewModelInject constructor(
 //        get() = _data
 
     init {
-        data = respository.getAllData()
+        data = repository.getAllData()
     }
 
     fun insertData(todoData: ToDoModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            respository.insertData(todoData)
+            repository.insertData(todoData)
+        }
+    }
+    fun updateData(todoData: ToDoModel){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateData(todoData)
         }
     }
 }
