@@ -72,20 +72,19 @@ class ListFragment : BaseFragment<FragmentListBinding>(), SearchView.OnQueryText
                 viewModel.deleteData(deletedItem)
                 adapter.notifyItemRemoved(viewHolder.adapterPosition)
 
-                restoreDeletedItem(viewHolder.itemView, deletedItem, viewHolder.adapterPosition)
+                restoreDeletedItem(viewHolder.itemView, deletedItem)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
-    private fun restoreDeletedItem(view: View, deletedItem: ToDoModel, position: Int) {
+    private fun restoreDeletedItem(view: View, deletedItem: ToDoModel) {
         val snackbar = Snackbar.make(
             view, "Deleted ${deletedItem.title}", Snackbar.LENGTH_LONG
         )
         snackbar.setAction(getString(R.string.undo)) {
             viewModel.insertData(deletedItem)
-            adapter.notifyItemChanged(position)
         }
         snackbar.show()
     }
