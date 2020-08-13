@@ -1,5 +1,8 @@
 package com.example.todoapp.common
 
+import android.app.Activity
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -46,3 +49,13 @@ fun <T> Fragment.viewLifecycle(): ReadWriteProperty<Fragment, T> =
             this.binding = value
         }
     }
+
+fun Activity.hideKeyboard(){
+    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    val currentFocusedView = currentFocus
+    currentFocusedView?.let{
+        inputMethodManager.hideSoftInputFromWindow(
+            it.windowToken, InputMethodManager.HIDE_NOT_ALWAYS
+        )
+    }
+}

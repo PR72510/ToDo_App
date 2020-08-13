@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.todoapp.R
 import com.example.todoapp.common.BaseFragment
+import com.example.todoapp.common.hideKeyboard
 import com.example.todoapp.data.models.ToDoModel
 import com.example.todoapp.data.viewmodel.ToDoViewModel
 import com.example.todoapp.databinding.FragmentListBinding
@@ -41,6 +42,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(), SearchView.OnQueryText
         setUpRecyclerView()
         setUpListeners()
         handleObservers()
+        requireActivity().hideKeyboard()
     }
 
     private fun setUpListeners() {

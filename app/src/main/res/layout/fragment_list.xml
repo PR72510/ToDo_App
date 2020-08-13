@@ -61,6 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:handleNoData="@{viewModel.data}"
+            android:visibility="gone"
             app:constraint_referenced_ids="ivNoData,tvNoData" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

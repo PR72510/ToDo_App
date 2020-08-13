@@ -30,14 +30,16 @@
 
             <TextView
                 android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_16"
                 android:maxLength="25"
                 android:text="@{todo.title}"
                 android:textSize="20sp"
+                android:layout_marginEnd="@dimen/dp_16"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/cvPriorityIndicator"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Title" />
