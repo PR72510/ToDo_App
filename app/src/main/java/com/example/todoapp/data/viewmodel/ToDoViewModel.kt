@@ -16,9 +16,7 @@ class ToDoViewModel @ViewModelInject constructor(
     private val repository: ToDoRepository
 ) : ViewModel() {
 
-    //    private val _data = MutableLiveData<List<ToDoModel>>()
     val data: LiveData<List<ToDoModel>>
-//        get() = _data
 
     init {
         data = repository.getAllData()
@@ -29,9 +27,22 @@ class ToDoViewModel @ViewModelInject constructor(
             repository.insertData(todoData)
         }
     }
-    fun updateData(todoData: ToDoModel){
+
+    fun updateData(todoData: ToDoModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateData(todoData)
+        }
+    }
+
+    fun deleteData(todoData: ToDoModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteData(todoData)
+        }
+    }
+
+    fun deleteAll(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAll()
         }
     }
 }

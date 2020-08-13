@@ -18,8 +18,9 @@ import com.example.todoapp.data.models.Priority
  */
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
-    lateinit var binding: T
-    
+    private var _binding: T? = null
+     val binding get() = _binding
+
     val listener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>?) {}
 
@@ -37,9 +38,9 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, getContentView(), container, false)
+        _binding = DataBindingUtil.inflate(inflater, getContentView(), container, false)
         setHasOptionsMenu(true)
-        return binding.root
+        return binding?.root
     }
 
     abstract fun getContentView(): Int
@@ -57,11 +58,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         return !(title.isEmpty() || description.isEmpty())
     }
 
-    fun parsePriorityToInt(priority: Priority): Int {
-        return when (priority) {
-            Priority.HIGH -> 0
-            Priority.MEDIUM -> 1
-            Priority.LOW -> 2
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

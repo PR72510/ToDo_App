@@ -1,5 +1,6 @@
 package com.example.todoapp.fragments.update
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -24,14 +25,8 @@ class UpdateFragment : BaseFragment<FragmentUpdateBinding>() {
     override fun getContentView() = R.layout.fragment_update
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setUpUI()
-    }
-
-    private fun setUpUI() {
-        binding.etCurrentTitle.setText(args.currentItem.title)
-        binding.etCurrentDescription.setText(args.currentItem.description)
-        binding.spinnerCurrentPriorities.setSelection(parsePriorityToInt(args.currentItem.priority))
-        binding.spinnerCurrentPriorities.onItemSelectedListener = listener
+        binding?.args = args
+        binding?.spinnerCurrentPriorities?.onItemSelectedListener = listener
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -39,15 +34,34 @@ class UpdateFragment : BaseFragment<FragmentUpdateBinding>() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_save)
-            updateItem()
+        when (item.itemId) {
+            R.id.menu_save -> updateItem()
+            R.id.menu_delete -> confirmItemRemoval()
+        }
         return super.onOptionsItemSelected(item)
     }
 
+    private fun confirmItemRemoval() {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("Delete '${args.currentItem.title}'")
+            setMessage("Are you sure you want to Remove'${args.currentItem.title}' ?")
+            setPositiveButton("Yes") { _, _ ->
+                viewModel.deleteData(args.currentItem)
+                Toast.makeText(
+                    requireContext(),
+                    "Successfully removed ${args.currentItem.title}!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                findNavController().popBackStack()
+            }
+            setNegativeButton("No") { _, _ -> }
+        }.create().show()
+    }
+
     private fun updateItem() {
-        val title = binding.etCurrentTitle.text.toString()
-        val description = binding.etCurrentDescription.text.toString()
-        val priority = binding.spinnerCurrentPriorities.selectedItem.toString()
+        val title = binding?.etCurrentTitle?.text.toString()
+        val description = binding?.etCurrentDescription?.text.toString()
+        val priority = binding?.spinnerCurrentPriorities?.selectedItem.toString()
 
         if (verifyDataFromUser(title, description)) {
             val updatedItem = ToDoModel(
@@ -55,7 +69,7 @@ class UpdateFragment : BaseFragment<FragmentUpdateBinding>() {
             )
             viewModel.updateData(updatedItem)
             Toast.makeText(requireContext(), "Successfully Updated!", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+            findNavController().popBackStack()
         } else {
             Toast.makeText(requireContext(), "Fill out all fields", Toast.LENGTH_SHORT).show()
         }

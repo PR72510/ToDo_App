@@ -27,7 +27,7 @@ class AddFragment : BaseFragment<FragmentAddBinding>() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.spinnerPriorities.onItemSelectedListener = listener
+        binding?.spinnerPriorities?.onItemSelectedListener = listener
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -38,9 +38,9 @@ class AddFragment : BaseFragment<FragmentAddBinding>() {
     }
 
     private fun insertDataToDB() {
-        val title = binding.etTitle.text.toString()
-        val priority = binding.spinnerPriorities.selectedItem.toString()
-        val description = binding.etDescription.text.toString()
+        val title = binding?.etTitle?.text.toString()
+        val priority = binding?.spinnerPriorities?.selectedItem.toString()
+        val description = binding?.etDescription?.text.toString()
 
         val isValid = verifyDataFromUser(title, description)
         if (isValid) {
@@ -52,7 +52,7 @@ class AddFragment : BaseFragment<FragmentAddBinding>() {
             )
             viewModel.insertData(todoData)
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_addFragment_to_listFragment)
+            findNavController().popBackStack()
         } else {
             Toast.makeText(requireContext(), "Fill out all fields", Toast.LENGTH_SHORT).show()
         }
