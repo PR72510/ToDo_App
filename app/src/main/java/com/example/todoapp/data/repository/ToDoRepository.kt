@@ -11,18 +11,22 @@ import javax.inject.Inject
 class ToDoRepository @Inject constructor(private val toDoDao: ToDoDao) {
 
     fun getAllData(): LiveData<List<ToDoModel>> = toDoDao.getAllData()
+    val sortByHighPriority = toDoDao.sortByHighPriority()
+    val sortByLowPriority = toDoDao.sortByLowPriority()
 
     suspend fun insertData(toDoModel: ToDoModel) {
         toDoDao.insertData(toDoModel)
     }
 
-    suspend fun updateData(toDoModel: ToDoModel){
+    suspend fun updateData(toDoModel: ToDoModel) {
         toDoDao.updateData(toDoModel)
     }
 
-    suspend fun deleteData(toDoModel: ToDoModel){
+    suspend fun deleteData(toDoModel: ToDoModel) {
         toDoDao.deleteData(toDoModel)
     }
 
     suspend fun deleteAll() = toDoDao.deleteAll()
+
+    fun searchTask(searchQuery: String) = toDoDao.searchTask(searchQuery)
 }

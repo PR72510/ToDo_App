@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.todoapp.R
 import com.example.todoapp.common.BaseFragment
 import com.example.todoapp.data.models.ToDoModel
@@ -27,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
 @AndroidEntryPoint
-class ListFragment : BaseFragment<FragmentListBinding>() {
+class ListFragment : BaseFragment<FragmentListBinding>(), SearchView.OnQueryTextListener {
 
     private val viewModel: ToDoViewModel by viewModels()
     private val adapter: ToDoListAdapter by lazy { ToDoListAdapter() }
@@ -58,7 +59,7 @@ class ListFragment : BaseFragment<FragmentListBinding>() {
     private fun setUpRecyclerView() {
         val recyclerView = binding?.rvTasks
         recyclerView?.adapter = adapter
-        recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView?.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView?.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
 
         swipeToDelete(recyclerView)
@@ -94,11 +95,16 @@ class ListFragment : BaseFragment<FragmentListBinding>() {
         val searchView = menu.findItem(R.id.menu_search).actionView as SearchView
         val searchBar = searchView.findViewById<LinearLayout>(R.id.search_bar)
         searchBar.layoutTransition = LayoutTransition()
+
+        searchView.isSubmitButtonEnabled = true
+        searchView.setOnQueryTextListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.delete_all -> confirmRemoveAll()
+            R.id.low_priority -> viewModel.sortedByLowPriority.observe(viewLifecycleOwner, Observer { adapter.setData(it) })
+            R.id.high_priority -> viewModel.sortedByHighPriority.observe(viewLifecycleOwner, Observer { adapter.setData(it) })
         }
         return super.onOptionsItemSelected(item)
     }
@@ -119,4 +125,25 @@ class ListFragment : BaseFragment<FragmentListBinding>() {
         }.create().show()
     }
 
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if (query != null) {
+            searDatabase(query)
+        }
+        return true
+    }
+
+    private fun searDatabase(query: String) {
+        val searchQuery = "%$query%"
+
+        viewModel.searchDatabse(searchQuery).observe(viewLifecycleOwner, Observer { list ->
+            list?.let { adapter.setData(list) }
+        })
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        if (query != null) {
+            searDatabase(query)
+        }
+        return true
+    }
 }

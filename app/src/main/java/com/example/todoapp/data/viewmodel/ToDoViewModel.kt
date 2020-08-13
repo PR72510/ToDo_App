@@ -17,9 +17,13 @@ class ToDoViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     val data: LiveData<List<ToDoModel>>
+    val sortedByHighPriority: LiveData<List<ToDoModel>>
+    val sortedByLowPriority: LiveData<List<ToDoModel>>
 
     init {
         data = repository.getAllData()
+        sortedByHighPriority = repository.sortByHighPriority
+        sortedByLowPriority = repository.sortByLowPriority
     }
 
     fun insertData(todoData: ToDoModel) {
@@ -45,4 +49,5 @@ class ToDoViewModel @ViewModelInject constructor(
             repository.deleteAll()
         }
     }
+    fun searchDatabse(query: String) = repository.searchTask(query)
 }
